@@ -109,13 +109,20 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        let errorMessage = 'Failed to get response from AI';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          console.error('Could not parse error response');
+        }
+        throw new Error(errorMessage);
       }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       
-      let assistantMessage: Message = {
+      const assistantMessage: Message = {
         id: nanoid(),
         role: 'assistant',
         content: '',
@@ -178,10 +185,12 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('Error sending message:', error);
       
+      const errorText = error instanceof Error ? error.message : 'Unknown error occurred';
+      
       const errorMessage: Message = {
         id: nanoid(),
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: `⚠️ **Error**: ${errorText}\n\nPlease try again or check your API configuration.`,
         timestamp: Date.now(),
         mode,
       };

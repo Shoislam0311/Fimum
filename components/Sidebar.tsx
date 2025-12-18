@@ -46,7 +46,7 @@ export default function Sidebar() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-lg bg-gray-800/90 backdrop-blur-sm text-white hover:bg-gray-700 transition-all duration-300 border border-gray-700 hover:border-blue-500 shadow-lg hover:shadow-blue-500/30 hover:scale-110"
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -54,8 +54,8 @@ export default function Sidebar() {
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-40
-          w-72 bg-gray-900 text-white flex flex-col
-          transform transition-transform duration-200 ease-in-out
+          w-72 bg-gray-900 border-r border-gray-800 text-white flex flex-col shadow-2xl
+          transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
@@ -65,7 +65,7 @@ export default function Sidebar() {
               createNewConversation();
               setIsOpen(false);
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105 transform"
           >
             <Plus size={20} />
             <span className="font-medium">New Chat</span>
@@ -94,14 +94,14 @@ export default function Sidebar() {
                       }}
                       className={`
                         group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer
-                        transition-colors
+                        transition-all duration-200
                         ${currentConversation?.id === conv.id
-                          ? 'bg-gray-800 text-white'
-                          : 'hover:bg-gray-800 text-gray-300'
+                          ? 'bg-gray-800 text-white shadow-md border-l-2 border-blue-500'
+                          : 'hover:bg-gray-800/50 text-gray-300 hover:translate-x-1'
                         }
                       `}
                     >
-                      <span className="text-lg">
+                      <span className="text-lg group-hover:scale-110 transition-transform">
                         {MODEL_CONFIGS[conv.mode]?.icon || '💬'}
                       </span>
                       <span className="flex-1 truncate text-sm">
@@ -109,7 +109,7 @@ export default function Sidebar() {
                       </span>
                       <button
                         onClick={(e) => handleDelete(e, conv.id)}
-                        className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-600 rounded transition-all"
+                        className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-600 rounded transition-all duration-200 hover:scale-110"
                       >
                         <Trash2 size={14} />
                       </button>
